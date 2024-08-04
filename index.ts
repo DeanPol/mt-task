@@ -8,26 +8,35 @@ interface ProductInterface {
 export class Cart {
   private itemList: ProductInterface[];
   private total: number;
+  private itemMap: Map<string, number>;
 
   constructor() {
     this.itemList = [];
     this.total = 0;
+    this.itemMap = new Map();
   }
 
-  addItem(item: ProductInterface) {
+  addItem(item: ProductInterface): void {
     this.itemList.push(item);
+    this.addToMap(item.id);
     this.total += item.price;
 
     this.checkProductDiscount(item);
   }
 
-  checkProductDiscount(addedItem: ProductInterface) {
+  addToMap(key: string): void {
+    const currentCount = this.itemMap.get(key) || 0;
+    this.itemMap.set(key, currentCount + 1);
+  }
+
+  getSameCount(key: string): number {
+    return this.itemMap.get(key) || 0;
+  }
+
+  checkProductDiscount(addedItem: ProductInterface): void {
     if (!addedItem.qty || !addedItem.discount) return;
 
-    if (
-      this.itemList.filter((item) => item.id == addedItem.id).length ==
-      addedItem.qty
-    ) {
+    if (this.getSameCount(addedItem.id) == addedItem.qty) {
       this.total -= addedItem.discount;
     }
   }

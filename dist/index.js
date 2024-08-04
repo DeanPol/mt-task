@@ -5,17 +5,25 @@ class Cart {
     constructor() {
         this.itemList = [];
         this.total = 0;
+        this.itemMap = new Map();
     }
     addItem(item) {
         this.itemList.push(item);
+        this.addToMap(item.id);
         this.total += item.price;
         this.checkProductDiscount(item);
+    }
+    addToMap(key) {
+        const currentCount = this.itemMap.get(key) || 0;
+        this.itemMap.set(key, currentCount + 1);
+    }
+    getSameCount(key) {
+        return this.itemMap.get(key) || 0;
     }
     checkProductDiscount(addedItem) {
         if (!addedItem.qty || !addedItem.discount)
             return;
-        if (this.itemList.filter((item) => item.id == addedItem.id).length ==
-            addedItem.qty) {
+        if (this.getSameCount(addedItem.id) == addedItem.qty) {
             this.total -= addedItem.discount;
         }
     }
