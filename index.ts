@@ -10,6 +10,9 @@ export class Cart {
   private total: number;
   private itemMap: Map<string, number>;
 
+  private campaignPriceGoal?: number;
+  private campaignOffer?: number;
+
   constructor() {
     this.itemList = [];
     this.total = 0;
@@ -62,6 +65,19 @@ export class Cart {
 
     if (this.getSameCount(removedItem.id) == removedItem.qty - 1) {
       this.total += removedItem.discount;
+    }
+  }
+
+  setCampaignTerms(priceGoal: number, offer: number) {
+    this.campaignPriceGoal = priceGoal;
+    this.campaignOffer = offer;
+  }
+
+  checkCampaignDiscount() {
+    if (!this.campaignPriceGoal) return;
+
+    if (this.total >= this.campaignPriceGoal) {
+      this.total -= this.campaignOffer || 0;
     }
   }
 

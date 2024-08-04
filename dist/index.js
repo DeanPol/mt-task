@@ -47,6 +47,17 @@ class Cart {
             this.total += removedItem.discount;
         }
     }
+    setCampaignTerms(priceGoal, offer) {
+        this.campaignPriceGoal = priceGoal;
+        this.campaignOffer = offer;
+    }
+    checkCampaignDiscount() {
+        if (!this.campaignPriceGoal)
+            return;
+        if (this.total >= this.campaignPriceGoal) {
+            this.total -= this.campaignOffer || 0;
+        }
+    }
     getCart() {
         return [this.itemList, this.total];
     }

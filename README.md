@@ -14,3 +14,5 @@
 - Since dealing with many additions of the same key, better to use a map to get count of all products with same key
 
 ## 0.5 can remove items based on key
+
+## 0.6 simple campaign offer based on current cart total
