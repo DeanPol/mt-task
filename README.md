@@ -3,3 +3,8 @@
 ## 0.1 initial commit setting up tsc and npm
 
 ## 0.2 classes, add item, return cart
+
+## 0.3 adding a discount price and quantity counter to the Product
+
+- The idea here is that when we add our item to our cart, we can compare the count of
+  this product in our cart with the number required for a discount.

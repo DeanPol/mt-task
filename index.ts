@@ -1,6 +1,8 @@
 interface ProductInterface {
   id: string;
   price: number;
+  qty?: number;
+  discount?: number;
 }
 
 export class Cart {
@@ -15,6 +17,19 @@ export class Cart {
   addItem(item: ProductInterface) {
     this.itemList.push(item);
     this.total += item.price;
+
+    this.checkProductDiscount(item);
+  }
+
+  checkProductDiscount(addedItem: ProductInterface) {
+    if (!addedItem.qty || !addedItem.discount) return;
+
+    if (
+      this.itemList.filter((item) => item.id == addedItem.id).length ==
+      addedItem.qty
+    ) {
+      this.total -= addedItem.discount;
+    }
   }
 
   getCart(): [ProductInterface[], number] {
@@ -23,8 +38,15 @@ export class Cart {
 }
 
 export class Product implements ProductInterface {
-  constructor(public id: string, public price: number) {
+  constructor(
+    public id: string,
+    public price: number,
+    public qty?: number,
+    public discount?: number
+  ) {
     this.id = id;
     this.price = price;
+    this.qty = qty;
+    this.discount = discount;
   }
 }
