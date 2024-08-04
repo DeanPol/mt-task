@@ -11,14 +11,6 @@ class Cart {
         this.total = 0;
         this.itemMap = new Map();
     }
-    addToMap(key) {
-        const currentCount = this.itemMap.get(key) || 0;
-        this.itemMap.set(key, currentCount + 1);
-    }
-    removeFromMap(key) {
-        const currentCount = this.itemMap.get(key) || 0;
-        this.itemMap.set(key, currentCount - 1);
-    }
     addItem(item) {
         this.itemList.push(item);
         this.addToMap(item.id);
@@ -33,6 +25,14 @@ class Cart {
         this.removeFromMap(item.id);
         this.total -= item.price;
         this.checkProductDiscountOnRemove(item);
+    }
+    addToMap(key) {
+        const currentCount = this.itemMap.get(key) || 0;
+        this.itemMap.set(key, currentCount + 1);
+    }
+    removeFromMap(key) {
+        const currentCount = this.itemMap.get(key) || 0;
+        this.itemMap.set(key, currentCount - 1);
     }
     getSameCount(key) {
         return this.itemMap.get(key) || 0;
@@ -73,13 +73,10 @@ class Product {
         this.price = price;
         this.qty = qty;
         this.discount = discount;
-        this.id = id;
-        this.price = price;
-        this.qty = qty;
-        this.discount = discount;
     }
 }
 exports.Product = Product;
+// ==================== test cases ================================================
 function assertEquals(parameter1, parameter2, message) {
     if (parameter1 != parameter2) {
         throw new Error(message);
@@ -135,3 +132,4 @@ function test4_campaignDiscount() {
     const checkout = cart.getCart();
     assertEquals(1100, checkout[1], "Invalid Total");
 }
+// =============================== end test cases ================================

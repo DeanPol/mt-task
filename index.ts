@@ -1,5 +1,3 @@
-import { assert } from "console";
-
 interface ProductInterface {
   id: string;
   price: number;
@@ -21,16 +19,6 @@ export class Cart {
     this.itemMap = new Map();
   }
 
-  private addToMap(key: string): void {
-    const currentCount = this.itemMap.get(key) || 0;
-    this.itemMap.set(key, currentCount + 1);
-  }
-
-  private removeFromMap(key: string): void {
-    const currentCount = this.itemMap.get(key) || 0;
-    this.itemMap.set(key, currentCount - 1);
-  }
-
   addItem(item: ProductInterface): void {
     this.itemList.push(item);
     this.addToMap(item.id);
@@ -48,6 +36,16 @@ export class Cart {
     this.total -= item.price;
 
     this.checkProductDiscountOnRemove(item);
+  }
+
+  private addToMap(key: string): void {
+    const currentCount = this.itemMap.get(key) || 0;
+    this.itemMap.set(key, currentCount + 1);
+  }
+
+  private removeFromMap(key: string): void {
+    const currentCount = this.itemMap.get(key) || 0;
+    this.itemMap.set(key, currentCount - 1);
   }
 
   private getSameCount(key: string): number {
@@ -94,13 +92,10 @@ export class Product implements ProductInterface {
     public price: number,
     public qty?: number,
     public discount?: number
-  ) {
-    this.id = id;
-    this.price = price;
-    this.qty = qty;
-    this.discount = discount;
-  }
+  ) {}
 }
+
+// ==================== test cases ================================================
 
 function assertEquals(parameter1: number, parameter2: number, message: string) {
   if (parameter1 != parameter2) {
@@ -178,3 +173,5 @@ export function test4_campaignDiscount() {
 
   assertEquals(1100, checkout[1], "Invalid Total");
 }
+
+// =============================== end test cases ================================
