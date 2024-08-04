@@ -16,6 +16,16 @@ export class Cart {
     this.itemMap = new Map();
   }
 
+  addToMap(key: string): void {
+    const currentCount = this.itemMap.get(key) || 0;
+    this.itemMap.set(key, currentCount + 1);
+  }
+
+  removeFromMap(key: string): void {
+    const currentCount = this.itemMap.get(key) || 0;
+    this.itemMap.set(key, currentCount - 1);
+  }
+
   addItem(item: ProductInterface): void {
     this.itemList.push(item);
     this.addToMap(item.id);
@@ -24,9 +34,15 @@ export class Cart {
     this.checkProductDiscount(item);
   }
 
-  addToMap(key: string): void {
-    const currentCount = this.itemMap.get(key) || 0;
-    this.itemMap.set(key, currentCount + 1);
+  removeItem(item: ProductInterface): void {
+    let itemIndexToDelete = this.itemList.indexOf(item);
+    if (itemIndexToDelete == -1) return;
+
+    this.itemList.splice(itemIndexToDelete, 1);
+    this.removeFromMap(item.id);
+    this.total -= item.price;
+
+    this.checkProductDiscountOnRemove(item);
   }
 
   getSameCount(key: string): number {
@@ -38,6 +54,14 @@ export class Cart {
 
     if (this.getSameCount(addedItem.id) == addedItem.qty) {
       this.total -= addedItem.discount;
+    }
+  }
+
+  checkProductDiscountOnRemove(removedItem: ProductInterface): void {
+    if (!removedItem.qty || !removedItem.discount) return;
+
+    if (this.getSameCount(removedItem.id) == removedItem.qty - 1) {
+      this.total += removedItem.discount;
     }
   }
 

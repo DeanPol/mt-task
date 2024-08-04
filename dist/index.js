@@ -7,15 +7,28 @@ class Cart {
         this.total = 0;
         this.itemMap = new Map();
     }
+    addToMap(key) {
+        const currentCount = this.itemMap.get(key) || 0;
+        this.itemMap.set(key, currentCount + 1);
+    }
+    removeFromMap(key) {
+        const currentCount = this.itemMap.get(key) || 0;
+        this.itemMap.set(key, currentCount - 1);
+    }
     addItem(item) {
         this.itemList.push(item);
         this.addToMap(item.id);
         this.total += item.price;
         this.checkProductDiscount(item);
     }
-    addToMap(key) {
-        const currentCount = this.itemMap.get(key) || 0;
-        this.itemMap.set(key, currentCount + 1);
+    removeItem(item) {
+        let itemIndexToDelete = this.itemList.indexOf(item);
+        if (itemIndexToDelete == -1)
+            return;
+        this.itemList.splice(itemIndexToDelete, 1);
+        this.removeFromMap(item.id);
+        this.total -= item.price;
+        this.checkProductDiscountOnRemove(item);
     }
     getSameCount(key) {
         return this.itemMap.get(key) || 0;
@@ -25,6 +38,13 @@ class Cart {
             return;
         if (this.getSameCount(addedItem.id) == addedItem.qty) {
             this.total -= addedItem.discount;
+        }
+    }
+    checkProductDiscountOnRemove(removedItem) {
+        if (!removedItem.qty || !removedItem.discount)
+            return;
+        if (this.getSameCount(removedItem.id) == removedItem.qty - 1) {
+            this.total += removedItem.discount;
         }
     }
     getCart() {
