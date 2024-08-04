@@ -16,3 +16,5 @@
 ## 0.5 can remove items based on key
 
 ## 0.6 simple campaign offer based on current cart total
+
+## 0.7 basic test cases
