@@ -1,9 +1,8 @@
 {
-  "name": "mt-task",
+  "name": "mt-task-checkout-system",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
     "./tests": "./dist/tests.js"
